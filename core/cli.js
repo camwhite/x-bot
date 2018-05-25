@@ -9,7 +9,7 @@ terminal.yesOrNo = promisify(terminal.yesOrNo)
 // The config object
 const twitch = {
   options: {
-    debug: false
+    debug: true
   },
   connection: {
     reconnect: true,
@@ -19,8 +19,8 @@ const twitch = {
 
 const getCredentials = async () => {
   terminal.on('key', (key) => {
-    if ( key === 'CTRL_C' ) {
-      terminal.green( 'CTRL-C detected...\n' ) ;
+    if (key === 'CTRL_C') {
+      terminal.red('CTRL-C detected...\n') ;
       process.exit()
     }
   }) 
@@ -31,6 +31,7 @@ const getCredentials = async () => {
     const result = await terminal.yesOrNo({ yes: [ 'y', 'ENTER' ], no: [ 'n' ] })
     if (result) {
       const twitch = readFileSync('./credentials.json')
+      terminal.reset()
       return JSON.parse(twitch)
     }
   }
@@ -56,6 +57,7 @@ const getCredentials = async () => {
   } else {
     terminal.red('You will need to login again next time :/')
   }
+  terminal.reset()
 
   return twitch
 }
