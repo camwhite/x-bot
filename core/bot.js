@@ -1,5 +1,6 @@
 const tmi = require('tmi.js')
 const chalk = require('chalk')
+const { renderMessages } = require('./cli')
 const Commands = require('./commands')
 
 class Bot {
@@ -42,9 +43,10 @@ class Bot {
     const username = userstate['display-name']
     //if (username === this.opts.identity.username) return
 
+    const data = { username, text: message }
     if (channel[0] !== 'WHISPER') {
-      console.log(`${chalk.green(username)}: ${message}`)
-      global.io.emit('msg', { username, text: message })
+      renderMessages('MESSAGE', data)
+      global.io.emit('msg', data)
     }
     await Commands.testForCommand(message)
   }
@@ -57,6 +59,7 @@ class Bot {
    */
   async onJoin (channel, username, self) {
     if (self) return
+    renderMessages('JOIN', { username, text: 'has joined' })
     global.io.emit('join', { username })
   }
 
@@ -68,6 +71,7 @@ class Bot {
    */
   async onPart (channel, username, self) {
     if (self) return
+    renderMessages('LEAVE', { username, text: 'has left' })
     global.io.emit('join', { username })
   }
 }

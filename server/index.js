@@ -1,7 +1,7 @@
 const app = require('./app')
 const sockets = require('./sockets')
 const Bot = require('../core/bot')
-const { getCredentials } = require('../core/cli')
+const { getOptions } = require('../core/cli')
 
 // Server start and configuration
 const port = process.env.PORT || 1337
@@ -22,6 +22,6 @@ if (process.env.NODE_ENV !== 'production') {
   await start()
   sockets(app.server)
 
-  const opts = await getCredentials()
+  const opts = await getOptions()
   const bot = new Bot(opts)
 })()

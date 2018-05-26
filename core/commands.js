@@ -21,6 +21,8 @@ class Commands {
         return this.next()
       case '!say' :
         return this.say(arg)
+      case '!tag' :
+        return this.tag(arg)
     }
   }
 
@@ -37,6 +39,10 @@ class Commands {
 
   static async next () {
     global.io.emit('next')
+  }
+
+  static async tag (arg) {
+    global.io.emit('tag', arg)
   }
 
   static async say (arg) {
